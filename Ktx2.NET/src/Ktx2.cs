@@ -395,7 +395,8 @@ namespace Ktx
             SupercompressionZSTD = ZSTD
         }
 
-        public enum TextureCreateFlagBits : int
+        [Flags]
+        public enum TextureCreateFlag : int
         {
             NoFlas = 0x00,
             LoadImageDataBit = 0x01,
@@ -410,10 +411,10 @@ namespace Ktx
             public IntPtr Vtbl;             
             public IntPtr Vvtbl;           
             public IntPtr _protected;  
-            public byte IsArray;                     
-            public byte IsCubemap;                   
-            public byte IsCompressed;                
-            public byte GenerateMipmaps;             
+            [MarshalAs(UnmanagedType.I1)] public bool IsArray;
+            [MarshalAs(UnmanagedType.I1)] public bool IsCubemap;                   
+            [MarshalAs(UnmanagedType.I1)] public bool IsCompressed;                
+            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;             
             public uint BaseWidth;                   
             public uint BaseHeight;                  
             public uint BaseDepth;                   
@@ -424,39 +425,66 @@ namespace Ktx
             public Orientation Orientation;        
             public IntPtr KvDataHead;                  
             public uint KvDataLen;                   
-            public byte* KvData;                      
+            public byte* PKvData;                      
             public nuint DataSize;                      
-            public byte* Data;
+            public byte* PData;
 
             public VkFormat VkFormat;
-            public uint* Dfd;
+            public uint* PDfd;
             public SupercmpScheme SupercompressionScheme;
-            public byte IsVideo;
+            [MarshalAs(UnmanagedType.I1)] public bool IsVideo;
             public uint Duration;
             public uint Timescale;
             public uint Loopcount;
             private IntPtr _private;
         }
 
+        private struct BDFD
+        {
+            // https://github.com/BoyBaykiller/KTX-Software/blob/29aeddefd6d02630a3e8bcda7c6202aac4a58c77/lib/texture2.c#L66
+            // C# doesn't have bitfields so we just give the struct the correct size here and do the translation in a wrapper.
+
+            private fixed uint data[6];
+            private fixed uint samples[6];
+        }
+
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromNamedFile", StringMarshalling = StringMarshalling.Utf8)]
+        public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlag textureCreateFlag, out Texture* texture);
+
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromMemory")]
-        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlagBits textureCreateFlagBits, Texture** texture);
+        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlag textureCreateFlag, out Texture* texture);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_WriteToNamedFile", StringMarshalling = StringMarshalling.Utf8)]
+        public static partial ErrorCode WriteToNamedFile(Texture* texture, string dstname);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_WriteToMemory")]
+        public static partial ErrorCode WriteToMemory(Texture* texture, out byte* pDstBytes, out nuint size);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_TranscodeBasis")]
         public static partial ErrorCode TranscodeBasis(Texture* texture, TranscodeFormat transcodeFormat, TranscodeFlagBits transcodeFlags);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_NeedsTranscoding")]
-        public static partial byte NeedsTranscoding(Texture* texture);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static partial bool NeedsTranscoding(Texture* texture);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_GetPremultipliedAlpha")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static partial bool GetPremultipliedAlpha(Texture* texture);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_GetNumComponents")]
         public static partial uint GetNumComponents(Texture* texture);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_GetImageOffset")]
-        public static partial ErrorCode GetImageOffset(Texture* texture, uint level, uint layer, uint faceSlice, nuint* offsets);
+        public static partial ErrorCode GetImageOffset(Texture* texture, uint level, uint layer, uint faceSlice, out nuint offset);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_GetImageSize")]
         public static partial nuint GetImageSize(Texture* texture, uint level);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_Destroy")]
         public static partial void Destroy(Texture* texture);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "vk2dfd")]
+        public static partial uint* Vk2Dfd(VkFormat format);
     }
 }

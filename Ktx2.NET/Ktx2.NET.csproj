@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -10,7 +10,8 @@
     <Description>C# bindings for https://github.com/KhronosGroup/KTX-Software/tree/main</Description>
     <Authors>BoyBaykiller</Authors>
     <PackageProjectUrl>https://github.com/BoyBaykiller/Ktx2.NET</PackageProjectUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
