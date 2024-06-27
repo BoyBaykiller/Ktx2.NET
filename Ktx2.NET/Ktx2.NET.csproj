@@ -17,12 +17,10 @@
   <ItemGroup>
     <Content Include="res/natives/win-x64/Release/ktx.dll">
       <PackagePath>runtimes/win-x64/native</PackagePath>
-      <Pack>true</Pack>
     </Content>
 
     <Content Include="res/natives/linux-x64/Release/libktx.so">
       <PackagePath>runtimes/linux-x64/native</PackagePath>
-      <Pack>true</Pack>
     </Content>
   </ItemGroup>
 

@@ -184,22 +184,22 @@ namespace Ktx
             D16UnormS8Uint = 128,
             D24UnormS8Uint = 129,
             D32SfloatS8Uint = 130,
-            Bc1RgbUnormBlock = 131,
-            Bc1RgbSrgbBlock = 132,
-            Bc1RgbaUnormBlock = 133,
-            Bc1RgbaSrgbBlock = 134,
-            Bc2UnormBlock = 135,
-            Bc2SrgbBlock = 136,
-            Bc3UnormBlock = 137,
-            Bc3SrgbBlock = 138,
-            Bc4UnormBlock = 139,
-            Bc4SnormBlock = 140,
-            Bc5UnormBlock = 141,
-            Bc5SnormBlock = 142,
-            Bc6HUfloatBlock = 143,
-            Bc6HSfloatBlock = 144,
-            Bc7UnormBlock = 145,
-            Bc7SrgbBlock = 146,
+            BC1RgbUnormBlock = 131,
+            BC1RgbSrgbBlock = 132,
+            BC1RgbaUnormBlock = 133,
+            BC1RgbaSrgbBlock = 134,
+            BC2UnormBlock = 135,
+            BC2SrgbBlock = 136,
+            BC3UnormBlock = 137,
+            BC3SrgbBlock = 138,
+            BC4UnormBlock = 139,
+            BC4SnormBlock = 140,
+            BC5UnormBlock = 141,
+            BC5SnormBlock = 142,
+            BC6HUfloatBlock = 143,
+            BC6HSfloatBlock = 144,
+            BC7UnormBlock = 145,
+            BC7SrgbBlock = 146,
             Etc2R8G8B8UnormBlock = 147,
             Etc2R8G8B8SrgbBlock = 148,
             Etc2R8G8B8A1UnormBlock = 149,
@@ -338,11 +338,11 @@ namespace Ktx
             Etc2Rgba = 1, // Opaque+alpha, ETC2_EAC_A8 block followed by a ETC1 block, alpha channel will be opaque for opaque .basis files
 
             // BC1-5, BC7 (desktop, some mobile devices)
-            Bc1Rgb = 2, // Opaque only, no punchthrough alpha support yet, transcodes alpha slice if cDecodeFlagsTranscodeAlphaDataToOpaqueFormats flag is specified
-            Bc3Rgba = 3, // Opaque+alpha, BC4 followed by a BC1 block, alpha channel will be opaque for opaque .basis files
-            Bc4R = 4, // Red only, alpha slice is transcoded to output if cDecodeFlagsTranscodeAlphaDataToOpaqueFormats flag is specified
-            Bc5Rg = 5, // XY: Two BC4 blocks, X=R and Y=Alpha, .basis file should have alpha data (if not Y will be all 255's)
-            Bc7Rgba = 6, // !< RGB or RGBA mode 5 for ETC1S,  modes 1, 2, 3, 4, 5, 6, 7 for UASTC.
+            BC1Rgb = 2, // Opaque only, no punchthrough alpha support yet, transcodes alpha slice if cDecodeFlagsTranscodeAlphaDataToOpaqueFormats flag is specified
+            BC3Rgba = 3, // Opaque+alpha, BC4 followed by a BC1 block, alpha channel will be opaque for opaque .basis files
+            BC4R = 4, // Red only, alpha slice is transcoded to output if cDecodeFlagsTranscodeAlphaDataToOpaqueFormats flag is specified
+            BC5Rg = 5, // XY: Two BC4 blocks, X=R and Y=Alpha, .basis file should have alpha data (if not Y will be all 255's)
+            BC7Rgba = 6, // !< RGB or RGBA mode 5 for ETC1S,  modes 1, 2, 3, 4, 5, 6, 7 for UASTC.
 
             // PVRTC1 4bpp (mobile, PowerVR devices)
             Pvrtc14Rgb = 8, // Opaque only, RGB or alpha if cDecodeFlagsTranscodeAlphaDataToOpaqueFormats flag is specified, nearly lowest quality of any texture format.
@@ -398,35 +398,35 @@ namespace Ktx
         [Flags]
         public enum TextureCreateFlag : int
         {
-            NoFlas = 0x00,
-            LoadImageDataBit = 0x01,
-            RawKeyValueDataBit = 0x02,
-            SkipKeyValueDataBit = 0x04,
-            CheckGltfBasisUBit = 0x08
+            None = 0x00,
+            LoadImageData = 0x01,
+            RawKVData = 0x02,
+            SkipKVData = 0x04,
+            CheckGltfBasisU = 0x08
         }
 
         public struct Texture
         {
-            public ClassId ClassId;                         
-            public IntPtr Vtbl;             
-            public IntPtr Vvtbl;           
-            public IntPtr _protected;  
+            public ClassId ClassId;
+            public IntPtr Vtbl;
+            public IntPtr Vvtbl;
+            private IntPtr _protected;
             [MarshalAs(UnmanagedType.I1)] public bool IsArray;
-            [MarshalAs(UnmanagedType.I1)] public bool IsCubemap;                   
-            [MarshalAs(UnmanagedType.I1)] public bool IsCompressed;                
-            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;             
-            public uint BaseWidth;                   
-            public uint BaseHeight;                  
-            public uint BaseDepth;                   
-            public uint NumDimensions;               
-            public uint NumLevels;                   
-            public uint NumLayers;                   
-            public uint NumFaces;                    
-            public Orientation Orientation;        
-            public IntPtr KvDataHead;                  
-            public uint KvDataLen;                   
-            public byte* PKvData;                      
-            public nuint DataSize;                      
+            [MarshalAs(UnmanagedType.I1)] public bool IsCubemap;
+            [MarshalAs(UnmanagedType.I1)] public bool IsCompressed;
+            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;
+            public uint BaseWidth;
+            public uint BaseHeight;
+            public uint BaseDepth;
+            public uint NumDimensions;
+            public uint NumLevels;
+            public uint NumLayers;
+            public uint NumFaces;
+            public Orientation Orientation;
+            public IntPtr KvDataHead;
+            public uint KvDataLen;
+            public byte* PKvData;
+            public nuint DataSize;
             public byte* PData;
 
             public VkFormat VkFormat;
