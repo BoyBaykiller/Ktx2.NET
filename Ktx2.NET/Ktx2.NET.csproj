@@ -19,9 +19,9 @@
       <PackagePath>runtimes/win-x64/native</PackagePath>
     </Content>
 
-    <Content Include="res/natives/linux-x64/Release/libktx.so">
+    <!--<Content Include="res/natives/linux-x64/Release/libktx.so">
       <PackagePath>runtimes/linux-x64/native</PackagePath>
-    </Content>
+    </Content>-->
   </ItemGroup>
 
 </Project>
