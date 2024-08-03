@@ -6,7 +6,7 @@ namespace Ktx
     {
         private const string LIBRARY_NAME_KTX = "ktx";
 
-        public enum ErrorCode : int
+        public enum ErrorCode : uint
         {
             Success = 0,
             FileDataError,
@@ -32,26 +32,19 @@ namespace Ktx
             ErrorMaxEnum
         }
 
-        public enum OrientationX : int
+        public enum OrientationX : uint
         {
             OrientXLeft = 'l',
             OrientXRight = 'r',
         }
 
-        public enum ClassId : int
+        public enum ClassId : uint
         {
             Texture1 = 1,
             Texture2 = 2,
         }
 
-        public struct Orientation
-        {
-            public OrientationX X;
-            public OrientationX Y;
-            public OrientationX Z;
-        };
-
-        public enum VkFormat : int
+        public enum VkFormat : uint
         {
             Undefined = 0,
             R4G4UnormPack8 = 1,
@@ -329,7 +322,7 @@ namespace Ktx
             MaxEnum = 0x7FFFFFFF
         }
 
-        public enum TranscodeFormat : int
+        public enum TranscodeFormat : uint
         {
             // Compressed formats
 
@@ -373,14 +366,15 @@ namespace Ktx
             Rgba4444 = 16,                          // 16bpp RGBA image stored in raster (not block) order in memory, R at bit position 12, A at bit position 0
         }
 
-        public enum TranscodeFlagBits
+        [Flags]
+        public enum TranscodeFlagBits : uint
         {
             PvrtcDecodeToNextPow2 = 2,
             TranscodeAlphaDataToOpaqueFormats = 4,
             HighQuality = 32,
         }
 
-        public enum SupercmpScheme : int
+        public enum SupercmpScheme : uint
         {
             None = 0,
             BasisLZ = 1, 
@@ -396,7 +390,7 @@ namespace Ktx
         }
 
         [Flags]
-        public enum TextureCreateFlag : int
+        public enum TextureCreateFlagBits : uint
         {
             None = 0x00,
             LoadImageData = 0x01,
@@ -404,6 +398,19 @@ namespace Ktx
             SkipKVData = 0x04,
             CheckGltfBasisU = 0x08
         }
+
+        public enum TextureCreateStorage : uint
+        {
+            NoStorage = 0,
+            AllocStorage = 1
+        }
+
+        public struct Orientation
+        {
+            public OrientationX X;
+            public OrientationX Y;
+            public OrientationX Z;
+        };
 
         public struct Texture
         {
@@ -439,6 +446,24 @@ namespace Ktx
             private IntPtr _private;
         }
 
+        public struct TextureCreateInfo
+        {
+            // Ignored in KTX2
+            private uint glInternalformat;
+
+            public VkFormat VkFormat;
+            public uint* PDfd;
+            public uint BaseWidth;
+            public uint BaseHeight;
+            public uint BaseDepth;
+            public uint NumDimensions;
+            public uint NumLevels;
+            public uint NumLayers;
+            public uint NumFaces; 
+            public byte IsArray;
+            public byte GenerateMipmaps;
+        }
+
         private struct BDFD
         {
             // https://github.com/BoyBaykiller/KTX-Software/blob/29aeddefd6d02630a3e8bcda7c6202aac4a58c77/lib/texture2.c#L66
@@ -448,12 +473,14 @@ namespace Ktx
             private fixed uint samples[6];
         }
 
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_Create")]
+        public static partial ErrorCode Create(in TextureCreateInfo createInfo, TextureCreateStorage textureCreateStorage, out Texture* newTex);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromNamedFile", StringMarshalling = StringMarshalling.Utf8)]
-        public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlag textureCreateFlag, out Texture* texture);
+        public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlagBits textureCreateFlag, out Texture* newTex);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromMemory")]
-        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlag textureCreateFlag, out Texture* texture);
+        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlagBits textureCreateFlag, out Texture* newTex);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_WriteToNamedFile", StringMarshalling = StringMarshalling.Utf8)]
         public static partial ErrorCode WriteToNamedFile(Texture* texture, string dstname);

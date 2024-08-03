@@ -175,7 +175,7 @@ namespace Ktx
                     dfd.VersionNumber = converter.ReadBits(16);
                     dfd.DescriptorBlockSize = converter.ReadBits(16);
 
-                    dfd.Model = converter.ReadBits(8);
+                    dfd.Model = (DFModel)converter.ReadBits(8);
                     dfd.Primaries = converter.ReadBits(8);
                     dfd.Transfer = converter.ReadBits(8);
                     dfd.Flags = converter.ReadBits(8);

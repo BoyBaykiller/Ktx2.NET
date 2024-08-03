@@ -7,10 +7,10 @@
     <Platforms>AnyCPU;x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>C# bindings for https://github.com/KhronosGroup/KTX-Software/tree/main</Description>
+    <Description>C# bindings for https://github.com/KhronosGroup/KTX-Software</Description>
     <Authors>BoyBaykiller</Authors>
     <PackageProjectUrl>https://github.com/BoyBaykiller/Ktx2.NET</PackageProjectUrl>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
