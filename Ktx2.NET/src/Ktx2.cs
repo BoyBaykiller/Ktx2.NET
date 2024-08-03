@@ -367,7 +367,7 @@ namespace Ktx
         }
 
         [Flags]
-        public enum TranscodeFlag : uint
+        public enum TranscodeFlagBits : uint
         {
             PvrtcDecodeToNextPow2 = 2,
             TranscodeAlphaDataToOpaqueFormats = 4,
@@ -390,7 +390,7 @@ namespace Ktx
         }
 
         [Flags]
-        public enum TextureCreateFlag : uint
+        public enum TextureCreateFlagBits : uint
         {
             None = 0x00,
             LoadImageData = 0x01,
@@ -476,17 +476,11 @@ namespace Ktx
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_Create")]
         public static partial ErrorCode Create(in TextureCreateInfo createInfo, TextureCreateStorage textureCreateStorage, out Texture* newTex);
 
-        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_SetImageFromMemory")]
-        public static partial ErrorCode SetImageFromMemory(Texture* texture, uint level, uint layer, uint faceSlide, in byte src, nuint srcSize);
-
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromNamedFile", StringMarshalling = StringMarshalling.Utf8)]
-        public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlag textureCreateFlag, out Texture* newTex);
+        public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlagBits textureCreateFlag, out Texture* newTex);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromMemory")]
-        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlag textureCreateFlag, out Texture* newTex);
-
-        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateCopy")]
-        public static partial ErrorCode CreateCopy(Texture* orig, out Texture* newTex);
+        public static partial ErrorCode CreateFromMemory(in byte bytes, nuint size, TextureCreateFlagBits textureCreateFlag, out Texture* newTex);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_WriteToNamedFile", StringMarshalling = StringMarshalling.Utf8)]
         public static partial ErrorCode WriteToNamedFile(Texture* texture, string dstname);
@@ -495,7 +489,7 @@ namespace Ktx
         public static partial ErrorCode WriteToMemory(Texture* texture, out byte* pDstBytes, out nuint size);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_TranscodeBasis")]
-        public static partial ErrorCode TranscodeBasis(Texture* texture, TranscodeFormat transcodeFormat, TranscodeFlag transcodeFlags);
+        public static partial ErrorCode TranscodeBasis(Texture* texture, TranscodeFormat transcodeFormat, TranscodeFlagBits transcodeFlags);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_NeedsTranscoding")]
         [return: MarshalAs(UnmanagedType.I1)]
