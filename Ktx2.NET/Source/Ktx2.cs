@@ -448,9 +448,7 @@ namespace Ktx
 
         public struct TextureCreateInfo
         {
-            // Ignored in KTX2
-            private uint glInternalformat;
-
+            private uint glInternalformat; // ignored in KTX2
             public VkFormat VkFormat;
             public uint* PDfd;
             public uint BaseWidth;
@@ -462,6 +460,28 @@ namespace Ktx
             public uint NumFaces; 
             public byte IsArray;
             public byte GenerateMipmaps;
+        }
+
+        public struct Header
+        {
+            public fixed byte Identifier[12];
+
+            public VkFormat VkFormat;
+            public uint TypeSize;
+            public uint PixelWidth;
+            public uint PixelHeight;
+            public uint PixelDepth;
+            public uint LayerCount;
+            public uint FaceCount;
+            public uint LevelCount;
+            public SupercmpScheme SupercompressionScheme;
+        }
+
+        public struct SupplementalInfo
+        {
+            [MarshalAs(UnmanagedType.I1)] private bool compressed; // unassigned in KTX2
+            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;
+            public ushort TextureDimension;
         }
 
         private struct BDFD
@@ -513,5 +533,8 @@ namespace Ktx
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "vk2dfd")]
         public static partial uint* Vk2Dfd(VkFormat format);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxCheckHeader2_")]
+        public static partial ErrorCode CheckHeader(ref Header pHeader, out SupplementalInfo pSuppInfo);
     }
 }
