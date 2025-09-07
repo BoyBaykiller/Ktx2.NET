@@ -418,10 +418,10 @@ namespace Ktx
             public IntPtr Vtbl;
             public IntPtr Vvtbl;
             private IntPtr _protected;
-            [MarshalAs(UnmanagedType.I1)] public bool IsArray;
-            [MarshalAs(UnmanagedType.I1)] public bool IsCubemap;
-            [MarshalAs(UnmanagedType.I1)] public bool IsCompressed;
-            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;
+            public bool IsArray;
+            public bool IsCubemap;
+            public bool IsCompressed;
+            public bool GenerateMipmaps;
             public uint BaseWidth;
             public uint BaseHeight;
             public uint BaseDepth;
@@ -439,7 +439,7 @@ namespace Ktx
             public VkFormat VkFormat;
             public uint* PDfd;
             public SupercmpScheme SupercompressionScheme;
-            [MarshalAs(UnmanagedType.I1)] public bool IsVideo;
+            public bool IsVideo;
             public uint Duration;
             public uint Timescale;
             public uint Loopcount;
@@ -479,8 +479,8 @@ namespace Ktx
 
         public struct SupplementalInfo
         {
-            [MarshalAs(UnmanagedType.I1)] private bool compressed; // unassigned in KTX2
-            [MarshalAs(UnmanagedType.I1)] public bool GenerateMipmaps;
+            private bool compressed; // unassigned in KTX2
+            public bool GenerateMipmaps;
             public ushort TextureDimension;
         }
 
@@ -495,6 +495,9 @@ namespace Ktx
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_Create")]
         public static partial ErrorCode Create(in TextureCreateInfo createInfo, TextureCreateStorage textureCreateStorage, out Texture* newTex);
+
+        [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_SetImageFromMemory")]
+        public static partial ErrorCode SetImageFromMemory(Texture* texture, uint level, uint layer, uint faceSlide, in byte src, nuint srcSize);
 
         [LibraryImport(LIBRARY_NAME_KTX, EntryPoint = "ktxTexture2_CreateFromNamedFile", StringMarshalling = StringMarshalling.Utf8)]
         public static partial ErrorCode CreateFromNamedFile(string filename, TextureCreateFlagBits textureCreateFlag, out Texture* newTex);

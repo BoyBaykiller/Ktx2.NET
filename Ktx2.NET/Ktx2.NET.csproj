@@ -11,7 +11,7 @@
     <Tags>c# bindings ktx</Tags>
     <Authors>BoyBaykiller</Authors>
     <PackageProjectUrl>https://github.com/BoyBaykiller/Ktx2.NET</PackageProjectUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
